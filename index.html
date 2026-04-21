@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Story — Preserve Your Family's Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:       #F5EDD8;
+      --cream-dark:  #EDE0C0;
+      --sepia:       #8B6914;
+      --sepia-dark:  #5C4410;
+      --leather:     #7B4B2A;
+      --leather-dk:  #4A2C17;
+      --ink:         #2C1A0E;
+      --ink-light:   #4A3428;
+      --gold:        #C9A84C;
+      --gold-light:  #E8C97A;
+      --sage:        #6B7B5E;
+      --map-lines:   rgba(139,105,20,0.12);
+      --shadow:      rgba(44,26,14,0.18);
+      --radius:      6px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Serif 4', 'Georgia', serif;
+      background-color: var(--cream);
+      color: var(--ink);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ─── Map Texture ──────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        repeating-linear-gradient(0deg,    transparent, transparent 39px, var(--map-lines) 39px, var(--map-lines) 40px),
+        repeating-linear-gradient(90deg,   transparent, transparent 39px, var(--map-lines) 39px, var(--map-lines) 40px);
+      opacity: 0.6;
+    }
+
+    /* ─── Layout Helpers ───────────────────────────────────────── */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .container--wide {
+      max-width: 960px;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    /* ─── Navigation ────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,237,216,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--leather-dk);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span {
+      color: var(--sepia);
+    }
+
+    .nav-cta {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.875rem;
+      color: var(--leather);
+      text-decoration: none;
+      border: 1.5px solid var(--leather);
+      padding: 6px 18px;
+      border-radius: var(--radius);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--leather);
+      color: var(--cream);
+    }
+
+    /* ─── Hero ──────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 100px 0 80px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sepia);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-weight: 700;
+      color: var(--leather-dk);
+      line-height: 1.18;
+      margin-bottom: 28px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sepia);
+    }
+
+    .hero-sub {
+      font-family: 'Lora', serif;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--ink-light);
+      max-width: 560px;
+      margin: 0 auto 48px;
+      font-style: italic;
+      line-height: 1.7;
+    }
+
+    /* ─── Decorative Divider ───────────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 0 auto 48px;
+      max-width: 320px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .divider-icon {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    /* ─── Email Form ────────────────────────────────────────────── */
+    .form-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .form-card {
+      background: rgba(255,255,255,0.65);
+      border: 1.5px solid var(--cream-dark);
+      border-radius: 10px;
+      padding: 40px 36px;
+      box-shadow: 0 4px 32px var(--shadow);
+      backdrop-filter: blur(4px);
+    }
+
+    .form-card-label {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sepia);
+      margin-bottom: 12px;
+    }
+
+    .form-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--leather-dk);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .form-card p {
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 480px) {
+      .form-group {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .form-input {
+      flex: 1;
+      font-family: 'Source Serif 4', serif;
+      font-size: 1rem;
+      padding: 14px 18px;
+      border: 1.5px solid var(--cream-dark);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.8);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--sepia);
+      box-shadow: 0 0 0 3px rgba(139,105,20,0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--ink-light);
+      opacity: 0.55;
+    }
+
+    .btn-primary {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      background: var(--leather);
+      color: var(--cream);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover {
+      background: var(--leather-dk);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-note {
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      opacity: 0.7;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* Form success / error states */
+    .form-message {
+      margin-top: 16px;
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      text-align: center;
+      display: none;
+    }
+
+    .form-message.success {
+      display: block;
+      background: rgba(107,123,94,0.15);
+      border: 1px solid var(--sage);
+      color: var(--sage);
+    }
+
+    .form-message.error {
+      display: block;
+      background: rgba(123,75,42,0.1);
+      border: 1px solid var(--leather);
+      color: var(--leather-dk);
+    }
+
+    /* ─── Social Proof ──────────────────────────────────────────── */
+    .social-proof {
+      background: var(--leather-dk);
+      color: var(--cream);
+    }
+
+    .social-proof .container {
+      max-width: 900px;
+    }
+
+    .proof-eyebrow {
+      text-align: center;
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 48px;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    @media (min-width: 640px) {
+      .proof-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .proof-item {
+      text-align: center;
+    }
+
+    .proof-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .proof-stat {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .proof-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      opacity: 0.88;
+    }
+
+    /* ─── Story Teaser ──────────────────────────────────────────── */
+    .story-teaser {
+      text-align: center;
+    }
+
+    .story-quote {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-style: italic;
+      color: var(--leather);
+      max-width: 600px;
+      margin: 0 auto 24px;
+      line-height: 1.75;
+      position: relative;
+    }
+
+    .story-quote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.4;
+      position: absolute;
+      top: -24px;
+      left: -16px;
+      line-height: 1;
+    }
+
+    .story-attribution {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.85rem;
+      color: var(--sepia);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── Kickstarter Teaser ────────────────────────────────────── */
+    .kickstarter {
+      text-align: center;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
+      border-top: 1px solid var(--cream-dark);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .kickstarter-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--leather);
+      color: var(--cream);
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+    }
+
+    .kickstarter h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--leather-dk);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .kickstarter p {
+      font-size: 1rem;
+      color: var(--ink-light);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+
+    .kickstarter-features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 28px;
+      max-width: 540px;
+      margin: 0 auto 36px;
+    }
+
+    .kickstarter-features li {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--ink-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kickstarter-features li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 0.7rem;
+    }
+
+    .kickstarter-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: var(--sepia);
+      color: var(--cream);
+      padding: 16px 36px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    .kickstarter-cta:hover {
+      background: var(--sepia-dark);
+      transform: translateY(-2px);
+    }
+
+    /* ─── App Feature ───────────────────────────────────────────── */
+    .app-feature {
+      background: var(--cream);
+    }
+
+    .app-feature .container {
+      max-width: 900px;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (min-width: 640px) {
+      .app-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .app-visual {
+      background: linear-gradient(135deg, var(--leather-dk) 0%, var(--leather) 100%);
+      border-radius: 12px;
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg,    transparent, transparent 28px, rgba(201,168,76,0.08) 28px, rgba(201,168,76,0.08) 29px),
+        repeating-linear-gradient(90deg,   transparent, transparent 28px, rgba(201,168,76,0.08) 28px, rgba(201,168,76,0.08) 29px);
+    }
+
+    .app-visual-icon {
+      font-size: 3.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-visual-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--gold-light);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+      line-height: 1.5;
+    }
+
+    .app-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--leather-dk);
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    .app-content p {
+      font-size: 1rem;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+
+    .app-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .app-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: var(--ink-light);
+    }
+
+    .app-list li .check {
+      color: var(--sage);
+      font-size: 1.1rem;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────────── */
+    footer {
+      background: var(--leather-dk);
+      color: var(--cream);
+      opacity: 0.88;
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    footer .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-logo span { color: var(--cream); }
+
+    .footer-tagline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--cream);
+      opacity: 0.7;
+    }
+
+    footer a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── Scroll-reveal ─────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Loading Spinner ──────────────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(245,237,216,0.3);
+      border-top-color: var(--cream);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ─── Responsive tweaks ────────────────────────────────────── */
+    @media (max-width: 480px) {
+      section { padding: 56px 0; }
+      .form-card { padding: 28px 20px; }
+      .hero { padding: 72px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Navigation ────────────────────────────────────────────── -->
+  <nav>
+    <div class="container">
+      <a href="https://famstory.org" class="nav-logo">Family<span>Story</span></a>
+      <a href="#signup" class="nav-cta">Get Early Access</a>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ───────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">Coming to Kickstarter soon</span>
+      <h1>What if your family stories<br /><em>never disappeared?</em></h1>
+      <p class="hero-sub">
+        A pioneer. A wagon. One family's 1,000-mile journey west.<br />
+        And the app that helps <em>your</em> family tell its story.
+      </p>
+      <div class="divider">
+        <span class="divider-icon">⚜</span>
+      </div>
+      <div class="form-wrap" id="signup">
+        <div class="form-card">
+          <p class="form-card-label">Pre-Launch — Limited Early Access</p>
+          <h2>Be the first to know when we launch</h2>
+          <p>Join the waitlist and get an exclusive early-backer's discount when we hit Kickstarter.</p>
+
+          <form id="email-form" novalidate>
+            <div class="form-group">
+              <input
+                type="email"
+                id="email-input"
+                class="form-input"
+                placeholder="your@email.com"
+                autocomplete="email"
+                required
+              />
+              <button type="submit" class="btn-primary" id="submit-btn">
+                Count Me In
+              </button>
+            </div>
+            <p class="form-note">🔒 No spam. Unsubscribe anytime. We respect your inbox.</p>
+            <div class="form-message" id="form-message"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Social Proof ───────────────────────────────────────────── -->
+  <section class="social-proof">
+    <div class="container">
+      <p class="proof-eyebrow">Why Stories Matter</p>
+      <div class="proof-grid">
+        <div class="proof-item reveal">
+          <span class="proof-icon">📖</span>
+          <div class="proof-stat">87%</div>
+          <p class="proof-text">of children can't name their great-grandparents' life stories</p>
+        </div>
+        <div class="proof-item reveal">
+          <span class="proof-icon">🌉</span>
+          <div class="proof-stat">1 in 3</div>
+          <p class="proof-text">family traditions are lost with each generation</p>
+        </div>
+        <div class="proof-item reveal">
+          <span class="proof-icon">✨</span>
+          <div class="proof-stat">∞</div>
+          <p class="proof-text">stories are waiting to be told — with the right place to keep them</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Story Teaser ────────────────────────────────────────────── -->
+  <section class="story-teaser">
+    <div class="container">
+      <div class="divider">
+        <span class="divider-icon">⚜</span>
+      </div>
+      <blockquote class="story-quote reveal">
+        They left Illinois in April of 1852. Oxen. Wagons. A newborn. Six months and a thousand miles
+        later, they reached the Salt Lake Valley — and built something that outlasted them all.
+      </blockquote>
+      <p class="story-attribution reveal">— The Johnson family journey, preserved in Family Story</p>
+    </div>
+  </section>
+
+  <!-- ─── App Feature ─────────────────────────────────────────────── -->
+  <section class="app-feature">
+    <div class="container">
+      <div class="app-grid">
+        <div class="app-visual reveal">
+          <span class="app-visual-icon">📚</span>
+          <p class="app-visual-text">Your family's entire story,<br />in one beautiful place</p>
+        </div>
+        <div class="app-content reveal">
+          <h2>More Than a Book —<br />A Living Legacy</h2>
+          <p>
+            Family Story is the app that makes it effortless to capture, preserve, and share the stories
+            that define who you are. Interview prompts, guided templates, audio recording, and a beautiful
+            keepsake book — all in one place.
+          </p>
+          <ul class="app-list">
+            <li><span class="check">✓</span> Guided story prompts that draw out the details that matter</li>
+            <li><span class="check">✓</span> Audio recording so voices — not just words — are preserved</li>
+            <li><span class="check">✓</span> Beautiful keepsake book, designed and printed for generations</li>
+            <li><span class="check">✓</span> Share with family, or keep private — you control the story</li>
+            <li><span class="check">✓</span> Free to start — no credit card required</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Kickstarter Teaser ──────────────────────────────────────── -->
+  <section class="kickstarter">
+    <div class="container">
+      <div class="kickstarter-badge">
+        <span>🚀</span> Launching on Kickstarter
+      </div>
+      <h2 class="reveal">The Book That Started It All</h2>
+      <p class="reveal">
+        <em>"My Great Great Grandpa Was a Pioneer"</em> — the story of one family's incredible
+        journey west, and the Kickstarter that brings Family Story to life.
+      </p>
+      <ul class="kickstarter-features reveal">
+        <li>32-page hardcover keepsake book</li>
+        <li>Archival quality printing</li>
+        <li>Original pioneer journal excerpts</li>
+        <li>Illustrated antique-map aesthetic</li>
+        <li>Free Family Story app access</li>
+        <li>Early-backer exclusive pricing</li>
+      </ul>
+      <a href="#signup" class="kickstarter-cta reveal">
+        Join the Waitlist →
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <a href="https://famstory.org" class="footer-logo">Family<span>Story</span></a>
+      <p class="footer-tagline">Every family has a story worth keeping.</p>
+      <p>
+        <a href="https://famstory.org">famstory.org</a>
+        &nbsp;·&nbsp;
+        <a href="mailto:hello@famstory.org">hello@famstory.org</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ─── ConvertKit Subscription Script ────────────────────────── -->
+  <script>
+    (function () {
+      const form = document.getElementById('email-form');
+      const emailInput = document.getElementById('email-input');
+      const submitBtn = document.getElementById('submit-btn');
+      const msgEl = document.getElementById('form-message');
+
+      function showMsg(text, type) {
+        msgEl.textContent = text;
+        msgEl.className = 'form-message ' + type;
+      }
+
+      function setLoading(loading) {
+        submitBtn.disabled = loading;
+        submitBtn.textContent = loading ? 'Signing up…' : 'Count Me In';
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+
+        if (!email) {
+          showMsg('Please enter your email address.', 'error');
+          emailInput.focus();
+          return;
+        }
+
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showMsg('Please enter a valid email address.', 'error');
+          emailInput.focus();
+          return;
+        }
+
+        setLoading(true);
+        showMsg('');
+
+        try {
+          // Step 1: Subscribe the email to ConvertKit
+          const subRes = await fetch('https://api.convertkit.com/v3/convertkit/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              api_key: 'j3IxWMsXcTfgSpTCLU7DNA',
+              email: email,
+              first_name: '',
+              tags: ['prelaunch-famstory'],
+              fields: {
+                source: 'famstory-landing-page'
+              }
+            })
+          });
+
+          const subData = await subRes.json();
+
+          // ConvertKit returns { id: <subscriber_id> } on success, or { error: ... } on failure
+          if (!subRes.ok || subData.error) {
+            // Treat already-subscribed as a soft success (don't alarm the user)
+            if (subData.error && subData.error.toString().includes('already')) {
+              showMsg("You're already on the list — we'll be in touch! 📬", 'success');
+            } else {
+              throw new Error(subData.error || 'Subscription failed.');
+            }
+            return;
+          }
+
+          showMsg("You're on the list! 🎉 Watch your inbox for launch news.", 'success');
+          emailInput.value = '';
+
+        } catch (err) {
+          console.error('ConvertKit subscribe error:', err);
+          showMsg('Something went wrong. Please try again in a moment.', 'error');
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      // ─── Scroll reveal ──────────────────────────────────────────
+      function revealOnScroll() {
+        const els = document.querySelectorAll('.reveal');
+        els.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 60) {
+            el.classList.add('visible');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', revealOnScroll, { passive: true });
+      revealOnScroll();
+
+      // ─── Smooth scroll for anchor links ────────────────────────
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+          const target = document.querySelector(a.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
