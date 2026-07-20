@@ -4,518 +4,482 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Family Story — Preserve Your Family's Story</title>
+  <meta name="description" content="Family Story helps families capture, preserve and share their most meaningful stories in beautiful keepsake books." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     /* ─── Reset & Base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream:       #F5EDD8;
-      --cream-dark:  #EDE0C0;
-      --sepia:       #8B6914;
-      --sepia-dark:  #5C4410;
-      --leather:     #7B4B2A;
-      --leather-dk:  #4A2C17;
-      --ink:         #2C1A0E;
-      --ink-light:   #4A3428;
-      --gold:        #C9A84C;
-      --gold-light:  #E8C97A;
-      --sage:        #6B7B5E;
-      --map-lines:   rgba(139,105,20,0.12);
-      --shadow:      rgba(44,26,14,0.18);
-      --radius:      6px;
+      --ivory:      #FAF8F5;
+      --cream:      #F2EDE4;
+      --sage:       #8BA888;
+      --sage-light: #B5C9AF;
+      --blush:      #D4A89A;
+      --sky:        #A8C5D4;
+      --charcoal:   #2D2D2D;
+      --warm-gray:  #6B6560;
+      --light-tan:  #E8E0D5;
+      --white:      #FFFFFF;
+
+      --font-heading: 'DM Serif Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --font-accent:  'Lora', Georgia, serif;
+
+      --max-text:  680px;
+      --max-wide:  900px;
+      --max-full: 1100px;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Source Serif 4', 'Georgia', serif;
-      background-color: var(--cream);
-      color: var(--ink);
-      line-height: 1.65;
+      font-family: var(--font-body);
+      background-color: var(--ivory);
+      color: var(--charcoal);
+      line-height: 1.7;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Map Texture ──────────────────────────────────────────── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image:
-        repeating-linear-gradient(0deg,    transparent, transparent 39px, var(--map-lines) 39px, var(--map-lines) 40px),
-        repeating-linear-gradient(90deg,   transparent, transparent 39px, var(--map-lines) 39px, var(--map-lines) 40px);
-      opacity: 0.6;
-    }
+    /* ─── Typography ───────────────────────────────────────────── */
+    h1, h2, h3 { font-family: var(--font-heading); font-weight: 400; line-height: 1.2; }
+    h1 { font-size: clamp(2.8rem, 7vw, 5rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3rem); }
+    h3 { font-size: clamp(1.25rem, 2.5vw, 1.6rem); }
 
-    /* ─── Layout Helpers ───────────────────────────────────────── */
+    p { color: var(--warm-gray); }
+
+    a { color: inherit; }
+
+    /* ─── Layout ───────────────────────────────────────────────── */
     .container {
-      max-width: 720px;
+      width: 100%;
+      max-width: var(--max-full);
       margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
+      padding: 0 32px;
+    }
+
+    .container--text {
+      max-width: var(--max-text);
     }
 
     .container--wide {
-      max-width: 960px;
+      max-width: var(--max-wide);
     }
 
-    section {
-      padding: 72px 0;
+    .section-padding {
+      padding: 120px 0;
+    }
+
+    .section-padding--sm {
+      padding: 80px 0;
     }
 
     /* ─── Navigation ────────────────────────────────────────────── */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
-      background: rgba(245,237,216,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--cream-dark);
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(250, 248, 245, 0.94);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--light-tan);
     }
 
     nav .container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      height: 72px;
     }
 
     .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--leather-dk);
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      color: var(--charcoal);
       text-decoration: none;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
 
-    .nav-logo span {
-      color: var(--sepia);
-    }
+    .nav-logo span { color: var(--sage); }
 
     .nav-cta {
-      font-family: 'Source Serif 4', serif;
+      font-family: var(--font-body);
       font-size: 0.875rem;
-      color: var(--leather);
+      font-weight: 500;
+      color: var(--white);
+      background: var(--charcoal);
       text-decoration: none;
-      border: 1.5px solid var(--leather);
-      padding: 6px 18px;
-      border-radius: var(--radius);
-      transition: background 0.2s, color 0.2s;
+      padding: 10px 24px;
+      border-radius: 50px;
+      transition: background 0.25s, transform 0.2s;
     }
 
-    .nav-cta:hover {
-      background: var(--leather);
-      color: var(--cream);
-    }
+    .nav-cta:hover { background: var(--warm-gray); transform: translateY(-1px); }
 
-    /* ─── Hero ──────────────────────────────────────────────────── */
+    /* ─── Hero ─────────────────────────────────────────────────── */
     .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 100px 0 80px;
       position: relative;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(168, 197, 212, 0.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 20%, rgba(181, 201, 175, 0.3) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, rgba(212, 168, 154, 0.2) 0%, transparent 50%),
+        var(--ivory);
+      overflow: hidden;
     }
 
-    .hero::after {
+    .hero::before {
       content: '';
       position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238BA888' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      padding: 0 32px;
     }
 
     .hero-eyebrow {
       display: inline-block;
-      font-family: 'Source Serif 4', serif;
+      font-family: var(--font-body);
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--sepia);
-      margin-bottom: 20px;
+      color: var(--sage);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.8s ease 0.2s forwards;
     }
 
     .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 6vw, 3.6rem);
-      font-weight: 700;
-      color: var(--leather-dk);
-      line-height: 1.18;
+      color: var(--charcoal);
       margin-bottom: 28px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--sepia);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.4s forwards;
     }
 
     .hero-sub {
-      font-family: 'Lora', serif;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: var(--ink-light);
-      max-width: 560px;
-      margin: 0 auto 48px;
+      font-family: var(--font-accent);
       font-style: italic;
-      line-height: 1.7;
-    }
-
-    /* ─── Decorative Divider ───────────────────────────────────── */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      color: var(--warm-gray);
+      max-width: 520px;
       margin: 0 auto 48px;
-      max-width: 320px;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.6s forwards;
     }
 
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    .hero-form {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease 0.8s forwards;
     }
 
-    .divider-icon {
-      color: var(--gold);
-      font-size: 1.2rem;
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.4s forwards;
     }
 
-    /* ─── Email Form ────────────────────────────────────────────── */
-    .form-wrap {
+    .scroll-indicator span {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      opacity: 0.6;
+    }
+
+    .scroll-indicator svg {
+      width: 20px;
+      height: 20px;
+      color: var(--warm-gray);
+      opacity: 0.5;
+      animation: bounce 2.4s ease infinite;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* ─── Email Form ───────────────────────────────────────────── */
+    .email-form-wrap {
       max-width: 480px;
       margin: 0 auto;
     }
 
-    .form-card {
-      background: rgba(255,255,255,0.65);
-      border: 1.5px solid var(--cream-dark);
-      border-radius: 10px;
-      padding: 40px 36px;
-      box-shadow: 0 4px 32px var(--shadow);
-      backdrop-filter: blur(4px);
-    }
-
-    .form-card-label {
-      font-family: 'Source Serif 4', serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sepia);
-      margin-bottom: 12px;
-    }
-
-    .form-card h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--leather-dk);
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-
-    .form-card p {
-      font-size: 0.95rem;
-      color: var(--ink-light);
-      margin-bottom: 24px;
-    }
-
-    .form-group {
+    .email-form {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
     @media (min-width: 480px) {
-      .form-group {
-        flex-direction: row;
-        align-items: flex-start;
-      }
+      .email-form { flex-direction: row; }
     }
 
-    .form-input {
+    .email-input {
       flex: 1;
-      font-family: 'Source Serif 4', serif;
+      font-family: var(--font-body);
       font-size: 1rem;
-      padding: 14px 18px;
-      border: 1.5px solid var(--cream-dark);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,0.8);
-      color: var(--ink);
+      padding: 16px 20px;
+      border: 1.5px solid var(--light-tan);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--charcoal);
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
 
-    .form-input:focus {
-      border-color: var(--sepia);
-      box-shadow: 0 0 0 3px rgba(139,105,20,0.1);
+    .email-input:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(139, 168, 136, 0.15);
     }
 
-    .form-input::placeholder {
-      color: var(--ink-light);
-      opacity: 0.55;
-    }
+    .email-input::placeholder { color: var(--warm-gray); opacity: 0.55; }
 
     .btn-primary {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
       font-weight: 600;
-      padding: 14px 28px;
-      background: var(--leather);
-      color: var(--cream);
+      padding: 16px 28px;
+      background: var(--charcoal);
+      color: var(--white);
       border: none;
-      border-radius: var(--radius);
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
+      transition: background 0.25s, transform 0.2s;
       white-space: nowrap;
-      letter-spacing: 0.01em;
     }
 
-    .btn-primary:hover {
-      background: var(--leather-dk);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .btn-primary:hover { background: var(--warm-gray); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     .form-note {
       font-size: 0.78rem;
-      color: var(--ink-light);
+      color: var(--warm-gray);
       opacity: 0.7;
-      margin-top: 12px;
+      margin-top: 8px;
       text-align: center;
     }
 
-    /* Form success / error states */
     .form-message {
-      margin-top: 16px;
-      padding: 12px 18px;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
       text-align: center;
       display: none;
     }
 
     .form-message.success {
       display: block;
-      background: rgba(107,123,94,0.15);
+      background: rgba(139, 168, 136, 0.15);
       border: 1px solid var(--sage);
-      color: var(--sage);
+      color: #5a7a56;
     }
 
     .form-message.error {
       display: block;
-      background: rgba(123,75,42,0.1);
-      border: 1px solid var(--leather);
-      color: var(--leather-dk);
+      background: rgba(212, 168, 154, 0.15);
+      border: 1px solid var(--blush);
+      color: #9c5f4a;
     }
 
-    /* ─── Social Proof ──────────────────────────────────────────── */
-    .social-proof {
-      background: var(--leather-dk);
-      color: var(--cream);
-    }
-
-    .social-proof .container {
-      max-width: 900px;
-    }
-
-    .proof-eyebrow {
+    /* ─── Section: Problem ────────────────────────────────────── */
+    .problem {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: var(--cream);
       text-align: center;
-      font-family: 'Source Serif 4', serif;
+    }
+
+    .problem .container { max-width: var(--max-text); }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-family: var(--font-body);
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--gold-light);
-      margin-bottom: 48px;
+      color: var(--blush);
+      margin-bottom: 20px;
     }
 
-    .proof-grid {
+    .problem h2 {
+      color: var(--charcoal);
+      margin-bottom: 24px;
+    }
+
+    .problem-body {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--warm-gray);
+      line-height: 1.85;
+      margin-bottom: 72px;
+    }
+
+    .stat-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 36px;
+      gap: 40px;
     }
 
-    @media (min-width: 640px) {
-      .proof-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    @media (min-width: 560px) {
+      .stat-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    .proof-item {
-      text-align: center;
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
-    .proof-icon {
-      font-size: 2rem;
-      margin-bottom: 12px;
-      display: block;
-    }
+    .stat-icon { font-size: 2.2rem; }
 
-    .proof-stat {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--gold-light);
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .proof-text {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      opacity: 0.88;
-    }
-
-    /* ─── Story Teaser ──────────────────────────────────────────── */
-    .story-teaser {
-      text-align: center;
-    }
-
-    .story-quote {
-      font-family: 'Lora', serif;
-      font-size: clamp(1.1rem, 3vw, 1.4rem);
-      font-style: italic;
-      color: var(--leather);
-      max-width: 600px;
-      margin: 0 auto 24px;
-      line-height: 1.75;
-      position: relative;
-    }
-
-    .story-quote::before {
-      content: '\201C';
-      font-family: 'Playfair Display', serif;
-      font-size: 4rem;
-      color: var(--gold);
-      opacity: 0.4;
-      position: absolute;
-      top: -24px;
-      left: -16px;
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      color: var(--charcoal);
       line-height: 1;
     }
 
-    .story-attribution {
-      font-family: 'Source Serif 4', serif;
-      font-size: 0.85rem;
-      color: var(--sepia);
-      letter-spacing: 0.08em;
-    }
-
-    /* ─── Kickstarter Teaser ────────────────────────────────────── */
-    .kickstarter {
-      text-align: center;
-      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-dark) 100%);
-      border-top: 1px solid var(--cream-dark);
-      border-bottom: 1px solid var(--cream-dark);
-    }
-
-    .kickstarter-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--leather);
-      color: var(--cream);
-      font-family: 'Source Serif 4', serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 8px 20px;
-      border-radius: 50px;
-      margin-bottom: 28px;
-    }
-
-    .kickstarter h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 700;
-      color: var(--leather-dk);
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .kickstarter p {
-      font-size: 1rem;
-      color: var(--ink-light);
-      max-width: 480px;
-      margin: 0 auto 32px;
-    }
-
-    .kickstarter-features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px 28px;
-      max-width: 540px;
-      margin: 0 auto 36px;
-    }
-
-    .kickstarter-features li {
-      list-style: none;
+    .stat-text {
       font-size: 0.9rem;
-      color: var(--ink-light);
+      color: var(--warm-gray);
+      line-height: 1.6;
+      max-width: 200px;
+    }
+
+    /* ─── Section: Promise ────────────────────────────────────── */
+    .promise {
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      gap: 8px;
+      background: var(--ivory);
     }
 
-    .kickstarter-features li::before {
-      content: '✦';
-      color: var(--gold);
-      font-size: 0.7rem;
+    .promise .container { max-width: var(--max-wide); }
+
+    .promise-header {
+      text-align: center;
+      max-width: var(--max-text);
+      margin: 0 auto 80px;
     }
 
-    .kickstarter-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Playfair Display', serif;
+    .promise-header .section-eyebrow { color: var(--sage); }
+
+    .promise-header h2 { color: var(--charcoal); margin-bottom: 20px; }
+
+    .promise-header p {
+      font-family: var(--font-accent);
+      font-style: italic;
       font-size: 1.1rem;
-      font-weight: 600;
-      background: var(--sepia);
-      color: var(--cream);
-      padding: 16px 36px;
-      border-radius: var(--radius);
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-      letter-spacing: 0.01em;
+      color: var(--warm-gray);
     }
 
-    .kickstarter-cta:hover {
-      background: var(--sepia-dark);
-      transform: translateY(-2px);
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
     }
 
-    /* ─── App Feature ───────────────────────────────────────────── */
-    .app-feature {
+    @media (min-width: 580px) {
+      .feature-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .feature-icon--sage { background: rgba(139, 168, 136, 0.18); }
+    .feature-icon--blush { background: rgba(212, 168, 154, 0.22); }
+    .feature-icon--sky { background: rgba(168, 197, 212, 0.25); }
+
+    .feature-item h3 { font-size: 1.1rem; color: var(--charcoal); margin-bottom: 4px; }
+    .feature-item p { font-size: 0.9rem; line-height: 1.65; }
+
+    /* ─── Section: How It Works ────────────────────────────────── */
+    .how-it-works {
       background: var(--cream);
     }
 
-    .app-feature .container {
-      max-width: 900px;
+    .how-header {
+      text-align: center;
+      max-width: var(--max-text);
+      margin: 0 auto 96px;
     }
 
-    .app-grid {
+    .how-header .section-eyebrow { color: var(--blush); }
+    .how-header h2 { color: var(--charcoal); margin-bottom: 20px; }
+    .how-header p { font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 96px;
+    }
+
+    .step {
       display: grid;
       grid-template-columns: 1fr;
       gap: 48px;
@@ -523,134 +487,375 @@
     }
 
     @media (min-width: 640px) {
-      .app-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      .step { grid-template-columns: 1fr 1fr; gap: 80px; }
+      .step:nth-child(even) .step-content { order: 2; }
+      .step:nth-child(even) .step-visual { order: 1; }
     }
 
-    .app-visual {
-      background: linear-gradient(135deg, var(--leather-dk) 0%, var(--leather) 100%);
-      border-radius: 12px;
+    .step-content { display: flex; flex-direction: column; gap: 16px; }
+
+    .step-number {
+      font-family: var(--font-heading);
+      font-size: 4.5rem;
+      color: var(--light-tan);
+      line-height: 1;
+    }
+
+    .step-content h3 { color: var(--charcoal); margin-bottom: 4px; }
+    .step-content p { font-size: 0.95rem; line-height: 1.7; }
+
+    .step-visual {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+      border-radius: 24px;
       height: 280px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 12px;
-      position: relative;
-      overflow: hidden;
     }
 
-    .app-visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg,    transparent, transparent 28px, rgba(201,168,76,0.08) 28px, rgba(201,168,76,0.08) 29px),
-        repeating-linear-gradient(90deg,   transparent, transparent 28px, rgba(201,168,76,0.08) 28px, rgba(201,168,76,0.08) 29px);
+    .step-visual-inner {
+      background: rgba(255,255,255,0.3);
+      border-radius: 16px;
+      width: 80%;
+      height: 60%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
     }
 
-    .app-visual-icon {
-      font-size: 3.5rem;
-      position: relative;
-      z-index: 1;
+    .step:nth-child(2) .step-visual { background: linear-gradient(135deg, var(--blush) 0%, #e0bfb3 100%); }
+    .step:nth-child(3) .step-visual { background: linear-gradient(135deg, var(--sky) 0%, #c2d8e4 100%); }
+
+    /* ─── Section: The Story ───────────────────────────────────── */
+    .the-story {
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(212, 168, 154, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(181, 201, 175, 0.12) 0%, transparent 60%),
+        var(--cream);
     }
 
-    .app-visual-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      color: var(--gold-light);
+    .the-story .container { max-width: var(--max-text); }
+
+    .story-header {
       text-align: center;
-      position: relative;
-      z-index: 1;
-      padding: 0 24px;
-      line-height: 1.5;
+      margin-bottom: 72px;
     }
 
-    .app-content h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 700;
-      color: var(--leather-dk);
-      margin-bottom: 16px;
-      line-height: 1.25;
+    .story-header .section-eyebrow { color: var(--sage); }
+
+    .story-header h2 { color: var(--charcoal); }
+
+    .story-chapter {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
     }
 
-    .app-content p {
-      font-size: 1rem;
-      color: var(--ink-light);
+    .story-pull-quote {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: clamp(1.25rem, 3vw, 1.7rem);
+      color: var(--charcoal);
+      line-height: 1.7;
+      padding-left: 28px;
+      border-left: 3px solid var(--sage);
+    }
+
+    .story-body p {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--warm-gray);
+      line-height: 2;
       margin-bottom: 20px;
     }
 
-    .app-list {
-      list-style: none;
+    .story-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .story-divider::before,
+    .story-divider::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--light-tan);
+    }
+
+    .story-divider span { color: var(--sage); font-size: 1.1rem; }
+
+    /* ─── Section: What You Get ───────────────────────────────── */
+    .what-you-get { background: var(--ivory); }
+
+    .wg-header {
+      text-align: center;
+      max-width: var(--max-text);
+      margin: 0 auto 72px;
+    }
+
+    .wg-header .section-eyebrow { color: var(--sage); }
+    .wg-header h2 { color: var(--charcoal); margin-bottom: 16px; }
+    .wg-header p { font-size: 1rem; }
+
+    .wg-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 560px) {
+      .wg-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .wg-card {
+      background: var(--white);
+      border: 1px solid var(--light-tan);
+      border-radius: 16px;
+      padding: 36px 32px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
+      transition: box-shadow 0.3s, transform 0.3s;
     }
 
-    .app-list li {
+    .wg-card:hover {
+      box-shadow: 0 8px 40px rgba(45, 45, 45, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .wg-card-icon { font-size: 1.75rem; }
+
+    .wg-card h3 { font-size: 1.05rem; color: var(--charcoal); }
+    .wg-card p { font-size: 0.9rem; line-height: 1.7; }
+
+    /* ─── Section: Testimonials ───────────────────────────────── */
+    .testimonials { background: var(--cream); }
+
+    .testimonials .container { max-width: var(--max-wide); }
+
+    .test-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .test-header .section-eyebrow { color: var(--blush); }
+    .test-header h2 { color: var(--charcoal); }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 640px) {
+      .test-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .test-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 32px;
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.95rem;
-      color: var(--ink-light);
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .app-list li .check {
-      color: var(--sage);
-      font-size: 1.1rem;
-      line-height: 1.4;
+    .test-quote {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--warm-gray);
+      line-height: 1.8;
+      flex: 1;
+    }
+
+    .test-quote::before { content: '\201C'; }
+    .test-quote::after { content: '\201D'; }
+
+    .test-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-top: 16px;
+      border-top: 1px solid var(--light-tan);
+    }
+
+    .test-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
       flex-shrink: 0;
     }
 
-    /* ─── Footer ────────────────────────────────────────────────── */
-    footer {
-      background: var(--leather-dk);
-      color: var(--cream);
-      opacity: 0.88;
+    .test-name { font-weight: 600; font-size: 0.9rem; color: var(--charcoal); }
+    .test-role { font-size: 0.8rem; color: var(--warm-gray); }
+
+    /* ─── Section: Kickstarter Teaser ──────────────────────────── */
+    .kickstarter-teaser {
+      background: var(--sage);
+      color: var(--white);
       text-align: center;
-      padding: 40px 0;
+    }
+
+    .kickstarter-teaser .container { max-width: var(--max-text); }
+
+    .kick-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.2);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 50px;
+      margin-bottom: 32px;
+    }
+
+    .kickstarter-teaser h2 {
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .kickstarter-teaser p {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .kick-features {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 28px;
+      margin-bottom: 44px;
+    }
+
+    .kick-features li {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kick-features li::before { content: '✦'; color: rgba(255,255,255,0.6); font-size: 0.7rem; }
+
+    .kickstarter-teaser .btn-primary {
+      background: var(--white);
+      color: var(--sage);
+    }
+
+    .kickstarter-teaser .btn-primary:hover {
+      background: var(--cream);
+      transform: translateY(-1px);
+    }
+
+    /* ─── Section: Final CTA ───────────────────────────────────── */
+    .final-cta {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(168, 197, 212, 0.4) 0%, transparent 60%),
+        var(--ivory);
+      text-align: center;
+    }
+
+    .final-cta .container { max-width: var(--max-text); }
+
+    .final-cta h2 {
+      color: var(--charcoal);
+      margin-bottom: 20px;
+    }
+
+    .final-cta p {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--warm-gray);
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    /* ─── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.7);
+      padding: 56px 0;
     }
 
     footer .container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+      text-align: center;
     }
 
     .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--gold-light);
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--white);
       text-decoration: none;
-      letter-spacing: -0.01em;
     }
 
-    .footer-logo span { color: var(--cream); }
+    .footer-logo span { color: var(--sage); }
 
     .footer-tagline {
-      font-family: 'Lora', serif;
+      font-family: var(--font-accent);
       font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
       font-size: 0.85rem;
-      color: var(--cream);
-      opacity: 0.7;
-    }
-
-    footer a {
-      color: var(--gold-light);
+      color: rgba(255,255,255,0.6);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
-    footer a:hover { text-decoration: underline; }
+    .footer-links a:hover { color: var(--white); }
 
-    /* ─── Scroll-reveal ─────────────────────────────────────────── */
+    .footer-copy {
+      font-size: 0.78rem;
+      opacity: 0.4;
+      margin-top: 8px;
+    }
+
+    /* ─── Scroll Reveal ───────────────────────────────────────── */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
     }
 
     .reveal.visible {
@@ -658,34 +863,40 @@
       transform: translateY(0);
     }
 
-    /* ─── Loading Spinner ──────────────────────────────────────── */
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(245,237,216,0.3);
-      border-top-color: var(--cream);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-32px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
     }
 
-    /* ─── Responsive tweaks ────────────────────────────────────── */
-    @media (max-width: 480px) {
-      section { padding: 56px 0; }
-      .form-card { padding: 28px 20px; }
-      .hero { padding: 72px 0 60px; }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ─── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .section-padding { padding: 80px 0; }
+      .section-padding--sm { padding: 60px 0; }
+      .step-visual { height: 220px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ─── Navigation ────────────────────────────────────────────── -->
-  <nav>
+  <nav id="main-nav">
     <div class="container">
       <a href="https://famstory.org" class="nav-logo">Family<span>Story</span></a>
       <a href="#signup" class="nav-cta">Get Early Access</a>
@@ -694,131 +905,296 @@
 
   <!-- ─── Hero ───────────────────────────────────────────────────── -->
   <section class="hero">
-    <div class="container">
-      <span class="hero-eyebrow">Coming to Kickstarter soon</span>
-      <h1>What if your family stories<br /><em>never disappeared?</em></h1>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Coming to Kickstarter</span>
+      <h1>Your family's story deserves to be remembered</h1>
       <p class="hero-sub">
-        A pioneer. A wagon. One family's 1,000-mile journey west.<br />
-        And the app that helps <em>your</em> family tell its story.
+        The app that helps families capture their most meaningful stories — and preserve them forever in a beautiful keepsake book.
       </p>
-      <div class="divider">
-        <span class="divider-icon">⚜</span>
-      </div>
-      <div class="form-wrap" id="signup">
-        <div class="form-card">
-          <p class="form-card-label">Pre-Launch — Limited Early Access</p>
-          <h2>Be the first to know when we launch</h2>
-          <p>Join the waitlist and get an exclusive early-backer's discount when we hit Kickstarter.</p>
-
-          <form id="email-form" novalidate>
-            <div class="form-group">
-              <input
-                type="email"
-                id="email-input"
-                class="form-input"
-                placeholder="your@email.com"
-                autocomplete="email"
-                required
-              />
-              <button type="submit" class="btn-primary" id="submit-btn">
-                Count Me In
-              </button>
-            </div>
-            <p class="form-note">🔒 No spam. Unsubscribe anytime. We respect your inbox.</p>
-            <div class="form-message" id="form-message"></div>
+      <div class="hero-form" id="signup">
+        <div class="email-form-wrap">
+          <form class="email-form" id="email-form" novalidate>
+            <input
+              type="email"
+              id="email-input"
+              class="email-input"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+            />
+            <button type="submit" class="btn-primary" id="submit-btn">
+              Join the Waitlist
+            </button>
           </form>
+          <p class="form-note">🔒 No spam. Unsubscribe anytime.</p>
+          <div class="form-message" id="form-message"></div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ─── The Problem ─────────────────────────────────────────────── -->
+  <section class="problem section-padding">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-eyebrow">The Problem</span>
+        <h2>Every year, stories disappear.</h2>
+        <p class="problem-body">
+          The details fade. The voices are silenced. And before we know it, the people who shaped us become names in old photographs — their wisdom, their humor, their hard-won lessons, lost forever.
+        </p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-item reveal">
+          <span class="stat-icon">📖</span>
+          <span class="stat-number">87%</span>
+          <p class="stat-text">of children can't name their great-grandparents' stories</p>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-icon">🌉</span>
+          <span class="stat-number">1 in 3</span>
+          <p class="stat-text">family traditions are lost with each generation</p>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-icon">✨</span>
+          <span class="stat-number">∞</span>
+          <p class="stat-text">stories waiting to be told — with the right place to keep them</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── Social Proof ───────────────────────────────────────────── -->
-  <section class="social-proof">
+  <!-- ─── The Promise ─────────────────────────────────────────────── -->
+  <section class="promise section-padding">
     <div class="container">
-      <p class="proof-eyebrow">Why Stories Matter</p>
-      <div class="proof-grid">
-        <div class="proof-item reveal">
-          <span class="proof-icon">📖</span>
-          <div class="proof-stat">87%</div>
-          <p class="proof-text">of children can't name their great-grandparents' life stories</p>
+      <div class="promise-header reveal">
+        <span class="section-eyebrow">The Promise</span>
+        <h2>We make it effortless to capture what matters</h2>
+        <p>Family Story turns the overwhelming into the achievable — guiding you through the process of capturing, preserving, and sharing your family's most meaningful moments.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-item reveal">
+          <div class="feature-icon feature-icon--sage">💬</div>
+          <h3>Guided Story Prompts</h3>
+          <p>Thoughtful questions that draw out the stories you never knew to ask about — from childhood memories to family recipes.</p>
         </div>
-        <div class="proof-item reveal">
-          <span class="proof-icon">🌉</span>
-          <div class="proof-stat">1 in 3</div>
-          <p class="proof-text">family traditions are lost with each generation</p>
+        <div class="feature-item reveal">
+          <div class="feature-icon feature-icon--blush">🎙</div>
+          <h3>Audio Recording</h3>
+          <p>Capture voices, not just words. Record the stories as they're told — with all the emotion, pauses, and laughter intact.</p>
         </div>
-        <div class="proof-item reveal">
-          <span class="proof-icon">✨</span>
-          <div class="proof-stat">∞</div>
-          <p class="proof-text">stories are waiting to be told — with the right place to keep them</p>
+        <div class="feature-item reveal">
+          <div class="feature-icon feature-icon--sky">📚</div>
+          <h3>Beautiful Keepsake Books</h3>
+          <p>Your stories, professionally designed and printed in a heirloom-quality book you'll treasure for generations.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── Story Teaser ────────────────────────────────────────────── -->
-  <section class="story-teaser">
+  <!-- ─── How It Works ───────────────────────────────────────────── -->
+  <section class="how-it-works section-padding">
     <div class="container">
-      <div class="divider">
-        <span class="divider-icon">⚜</span>
+      <div class="how-header reveal">
+        <span class="section-eyebrow">How It Works</span>
+        <h2>Three steps to a lasting legacy</h2>
+        <p>We handle the complexity so you can focus on what matters — the stories themselves.</p>
       </div>
-      <blockquote class="story-quote reveal">
-        They left Illinois in April of 1852. Oxen. Wagons. A newborn. Six months and a thousand miles
-        later, they reached the Salt Lake Valley — and built something that outlasted them all.
-      </blockquote>
-      <p class="story-attribution reveal">— The Johnson family journey, preserved in Family Story</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-content reveal-left">
+            <span class="step-number">01</span>
+            <h3>Answer thoughtful prompts</h3>
+            <p>Our guided questions help you explore memories you'd almost forgotten. Write freely, record audio, or simply chat — Family Story adapts to how you naturally share.</p>
+          </div>
+          <div class="step-visual reveal-right">
+            <div class="step-visual-inner">💬</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content reveal-right">
+            <span class="step-number">02</span>
+            <h3>Invite family to contribute</h3>
+            <p>Share the experience with siblings, parents, or cousins. Everyone adds their own perspective, photos, and stories — building a richer, fuller picture together.</p>
+          </div>
+          <div class="step-visual reveal-left">
+            <div class="step-visual-inner">👨‍👩‍👧‍👦</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content reveal-left">
+            <span class="step-number">03</span>
+            <h3>Receive your keepsake book</h3>
+            <p>We transform everything into a beautifully designed hardcover book — the kind you'll open again and again, and pass down with pride.</p>
+          </div>
+          <div class="step-visual reveal-right">
+            <div class="step-visual-inner">📖</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ─── App Feature ─────────────────────────────────────────────── -->
-  <section class="app-feature">
+  <!-- ─── The Story ───────────────────────────────────────────────── -->
+  <section class="the-story section-padding">
     <div class="container">
-      <div class="app-grid">
-        <div class="app-visual reveal">
-          <span class="app-visual-icon">📚</span>
-          <p class="app-visual-text">Your family's entire story,<br />in one beautiful place</p>
+      <div class="story-header reveal">
+        <span class="section-eyebrow">The Story</span>
+        <h2>The Johnson Family Journey</h2>
+      </div>
+      <div class="story-chapter">
+        <blockquote class="story-pull-quote reveal">
+          "They left Illinois in April of 1852. Oxen. Wagons. A newborn. Six months and a thousand miles later, they reached the Salt Lake Valley — and built something that outlasted them all."
+        </blockquote>
+        <div class="story-body">
+          <p class="reveal">The Johnson family didn't set out to become pioneers. They set out to find a home. Like thousands of others in the mid-1800s, they packed everything they owned into a single wagon and headed west — toward a life they could only imagine.</p>
+          <p class="reveal">The journey took six months. One of their children was born on the trail. Two family members didn't survive. But they kept going — because that's what families do. They endure. They adapt. They carry each other forward.</p>
+          <p class="reveal">Today, the Johnson's descendants number in the hundreds. They live across the country. Most never knew the full story of how their family got here — until someone finally asked the right questions and recorded the answers.</p>
         </div>
-        <div class="app-content reveal">
-          <h2>More Than a Book —<br />A Living Legacy</h2>
-          <p>
-            Family Story is the app that makes it effortless to capture, preserve, and share the stories
-            that define who you are. Interview prompts, guided templates, audio recording, and a beautiful
-            keepsake book — all in one place.
-          </p>
-          <ul class="app-list">
-            <li><span class="check">✓</span> Guided story prompts that draw out the details that matter</li>
-            <li><span class="check">✓</span> Audio recording so voices — not just words — are preserved</li>
-            <li><span class="check">✓</span> Beautiful keepsake book, designed and printed for generations</li>
-            <li><span class="check">✓</span> Share with family, or keep private — you control the story</li>
-            <li><span class="check">✓</span> Free to start — no credit card required</li>
-          </ul>
+        <div class="story-divider reveal"><span>⚜</span></div>
+        <p class="reveal" style="text-align:center; font-family: var(--font-accent); font-style: italic; color: var(--warm-gray); font-size: 1.05rem;">
+          Every family has a journey like this. Family Story helps you find it — and preserve it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── What You Get ────────────────────────────────────────────── -->
+  <section class="what-you-get section-padding">
+    <div class="container">
+      <div class="wg-header reveal">
+        <span class="section-eyebrow">What You Get</span>
+        <h2>Everything you need to preserve your story</h2>
+        <p>We thought of the details so you can focus on the memories.</p>
+      </div>
+      <div class="wg-grid">
+        <div class="wg-card reveal">
+          <span class="wg-card-icon">💬</span>
+          <h3>Interview Prompts</h3>
+          <p>Over 200 thoughtful, open-ended questions designed to draw out the stories that matter most — from childhood to adulthood, from triumph to everyday magic.</p>
+        </div>
+        <div class="wg-card reveal">
+          <span class="wg-card-icon">🎙</span>
+          <h3>Audio Recording</h3>
+          <p>Built-in voice recording so you can capture the authentic sound of the stories — the tone, the laughter, the hesitation. Voice is irreplaceable.</p>
+        </div>
+        <div class="wg-card reveal">
+          <span class="wg-card-icon">📚</span>
+          <h3>Keepsake Book</h3>
+          <p>A professionally designed hardcover book, printed on archival-quality paper. Available in multiple sizes. Delivered to your door, ready to be handed down.</p>
+        </div>
+        <div class="wg-card reveal">
+          <span class="wg-card-icon">👨‍👩‍👧‍👦</span>
+          <h3>Family Sharing</h3>
+          <p>Invite family members to contribute their own stories and photos. Build a collaborative record that's richer than any single perspective could ever be.</p>
+        </div>
+        <div class="wg-card reveal">
+          <span class="wg-card-icon">🔒</span>
+          <h3>Privacy Controls</h3>
+          <p>Your family's stories are private by default. You decide what to share, with whom, and when. Full control, always.</p>
+        </div>
+        <div class="wg-card reveal">
+          <span class="wg-card-icon">✨</span>
+          <h3>Beautiful Design</h3>
+          <p>We take your words and photos and craft them into something visually stunning — a book you'll be proud to display and thrilled to open.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── Kickstarter Teaser ──────────────────────────────────────── -->
-  <section class="kickstarter">
+  <!-- ─── Testimonials ─────────────────────────────────────────────── -->
+  <section class="testimonials section-padding">
     <div class="container">
-      <div class="kickstarter-badge">
-        <span>🚀</span> Launching on Kickstarter
+      <div class="test-header reveal">
+        <span class="section-eyebrow">In Their Words</span>
+        <h2>What early testers are saying</h2>
       </div>
-      <h2 class="reveal">The Book That Started It All</h2>
-      <p class="reveal">
-        <em>"My Great Great Grandpa Was a Pioneer"</em> — the story of one family's incredible
-        journey west, and the Kickstarter that brings Family Story to life.
-      </p>
-      <ul class="kickstarter-features reveal">
+      <div class="test-grid">
+        <div class="test-card reveal">
+          <p class="test-quote">I wish I'd had this years ago. My dad passed last spring, and there are so many questions I never thought to ask. This app makes it easy to start those conversations.</p>
+          <div class="test-author">
+            <div class="test-avatar">🧡</div>
+            <div>
+              <div class="test-name">Sarah M.</div>
+              <div class="test-role">Beta Tester, Portland</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card reveal">
+          <p class="test-quote">My mom started using this and ended up calling me for three hours to tell me stories I'd never heard. It opened something between us that I didn't know was closed.</p>
+          <div class="test-author">
+            <div class="test-avatar">🌊</div>
+            <div>
+              <div class="test-name">James K.</div>
+              <div class="test-role">Beta Tester, Austin</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card reveal">
+          <p class="test-quote">We made it a family project. Everyone contributed. When the book arrived, my 84-year-old grandmother cried. She said it was the most meaningful gift she'd ever received.</p>
+          <div class="test-author">
+            <div class="test-avatar">🌿</div>
+            <div>
+              <div class="test-name">Priya R.</div>
+              <div class="test-role">Beta Tester, Chicago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Kickstarter Teaser ─────────────────────────────────────── -->
+  <section class="kickstarter-teaser section-padding">
+    <div class="container">
+      <div class="reveal">
+        <div class="kick-badge">🚀 Launching on Kickstarter</div>
+        <h2>The Book That Started It All</h2>
+        <p>"My Great Great Grandpa Was a Pioneer" — the story of one family's incredible journey west, and the Kickstarter campaign that brings Family Story to life.</p>
+      </div>
+      <ul class="kick-features reveal">
         <li>32-page hardcover keepsake book</li>
         <li>Archival quality printing</li>
         <li>Original pioneer journal excerpts</li>
-        <li>Illustrated antique-map aesthetic</li>
+        <li>Antique-map inspired design</li>
         <li>Free Family Story app access</li>
         <li>Early-backer exclusive pricing</li>
       </ul>
-      <a href="#signup" class="kickstarter-cta reveal">
-        Join the Waitlist →
-      </a>
+      <div class="reveal">
+        <a href="#signup" class="btn-primary">Join the Waitlist →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Final CTA ───────────────────────────────────────────────── -->
+  <section class="final-cta section-padding">
+    <div class="container">
+      <div class="reveal">
+        <h2>Start your family's story today</h2>
+        <p>The best time to capture your family's history was twenty years ago. The second best time is now.</p>
+        <div class="email-form-wrap" style="max-width: 440px; margin: 0 auto;">
+          <form class="email-form" id="email-form-2" novalidate>
+            <input
+              type="email"
+              id="email-input-2"
+              class="email-input"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+            />
+            <button type="submit" class="btn-primary" id="submit-btn-2">
+              Get Early Access
+            </button>
+          </form>
+          <p class="form-note">🔒 No spam. Unsubscribe anytime.</p>
+          <div class="form-message" id="form-message-2"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -827,118 +1203,121 @@
     <div class="container">
       <a href="https://famstory.org" class="footer-logo">Family<span>Story</span></a>
       <p class="footer-tagline">Every family has a story worth keeping.</p>
-      <p>
+      <div class="footer-links">
         <a href="https://famstory.org">famstory.org</a>
-        &nbsp;·&nbsp;
         <a href="mailto:hello@famstory.org">hello@famstory.org</a>
-      </p>
+      </div>
+      <p class="footer-copy">&copy; 2026 Family Story. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- ─── ConvertKit Subscription Script ────────────────────────── -->
+  <!-- ─── Scripts ─────────────────────────────────────────────────── -->
   <script>
-    (function () {
-      const form = document.getElementById('email-form');
-      const emailInput = document.getElementById('email-input');
-      const submitBtn = document.getElementById('submit-btn');
-      const msgEl = document.getElementById('form-message');
+    // ─── Sticky nav on scroll ───────────────────────────────────
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
 
-      function showMsg(text, type) {
-        msgEl.textContent = text;
-        msgEl.className = 'form-message ' + type;
-      }
-
-      function setLoading(loading) {
-        submitBtn.disabled = loading;
-        submitBtn.textContent = loading ? 'Signing up…' : 'Count Me In';
-      }
-
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const email = emailInput.value.trim();
-
-        if (!email) {
-          showMsg('Please enter your email address.', 'error');
-          emailInput.focus();
-          return;
-        }
-
-        // Basic email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          showMsg('Please enter a valid email address.', 'error');
-          emailInput.focus();
-          return;
-        }
-
-        setLoading(true);
-        showMsg('');
-
-        try {
-          // Step 1: Subscribe the email to ConvertKit
-          const subRes = await fetch('https://api.convertkit.com/v3/convertkit/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              api_key: 'j3IxWMsXcTfgSpTCLU7DNA',
-              email: email,
-              first_name: '',
-              tags: ['prelaunch-famstory'],
-              fields: {
-                source: 'famstory-landing-page'
-              }
-            })
-          });
-
-          const subData = await subRes.json();
-
-          // ConvertKit returns { id: <subscriber_id> } on success, or { error: ... } on failure
-          if (!subRes.ok || subData.error) {
-            // Treat already-subscribed as a soft success (don't alarm the user)
-            if (subData.error && subData.error.toString().includes('already')) {
-              showMsg("You're already on the list — we'll be in touch! 📬", 'success');
-            } else {
-              throw new Error(subData.error || 'Subscription failed.');
-            }
-            return;
-          }
-
-          showMsg("You're on the list! 🎉 Watch your inbox for launch news.", 'success');
-          emailInput.value = '';
-
-        } catch (err) {
-          console.error('ConvertKit subscribe error:', err);
-          showMsg('Something went wrong. Please try again in a moment.', 'error');
-        } finally {
-          setLoading(false);
+    // ─── Scroll reveal ───────────────────────────────────────────
+    function revealOnScroll() {
+      const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+      els.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          el.classList.add('visible');
         }
       });
+    }
+    window.addEventListener('scroll', revealOnScroll, { passive: true });
+    revealOnScroll();
 
-      // ─── Scroll reveal ──────────────────────────────────────────
-      function revealOnScroll() {
-        const els = document.querySelectorAll('.reveal');
-        els.forEach(el => {
-          const rect = el.getBoundingClientRect();
-          if (rect.top < window.innerHeight - 60) {
-            el.classList.add('visible');
-          }
-        });
+    // ─── Smooth scroll for anchor links ─────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ─── ConvertKit subscription (shared logic) ─────────────────
+    async function subscribeEmail(email, msgEl, submitBtn, formEl) {
+      if (!email) {
+        msgEl.textContent = 'Please enter your email address.';
+        msgEl.className = 'form-message error';
+        return;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        msgEl.textContent = 'Please enter a valid email address.';
+        msgEl.className = 'form-message error';
+        return;
       }
 
-      window.addEventListener('scroll', revealOnScroll, { passive: true });
-      revealOnScroll();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing up…';
+      msgEl.className = 'form-message';
+      msgEl.style.display = 'none';
 
-      // ─── Smooth scroll for anchor links ────────────────────────
-      document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', e => {
-          const target = document.querySelector(a.getAttribute('href'));
-          if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+      try {
+        const res = await fetch('https://api.convertkit.com/v3/convertkit/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            api_key: 'j3IxWMsXcTfgSpTCLU7DNA',
+            email: email,
+            first_name: '',
+            tags: ['prelaunch-famstory'],
+            fields: { source: 'famstory-landing-page' }
+          })
         });
-      });
-    })();
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          if (data.error && data.error.toString().includes('already')) {
+            msgEl.textContent = "You're already on the list — we'll be in touch! 📬";
+            msgEl.className = 'form-message success';
+          } else {
+            throw new Error(data.error || 'Subscription failed.');
+          }
+          return;
+        }
+        msgEl.textContent = "You're on the list! 🎉 Watch your inbox for launch news.";
+        msgEl.className = 'form-message success';
+        formEl.reset();
+      } catch (err) {
+        console.error('ConvertKit error:', err);
+        msgEl.textContent = 'Something went wrong. Please try again.';
+        msgEl.className = 'form-message error';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = formEl.id === 'email-form-2' ? 'Get Early Access' : 'Join the Waitlist';
+      }
+    }
+
+    // Form 1 (hero)
+    const form1 = document.getElementById('email-form');
+    const emailInput1 = document.getElementById('email-input');
+    const submitBtn1 = document.getElementById('submit-btn');
+    const msgEl1 = document.getElementById('form-message');
+
+    form1.addEventListener('submit', e => {
+      e.preventDefault();
+      subscribeEmail(emailInput1.value.trim(), msgEl1, submitBtn1, form1);
+    });
+
+    // Form 2 (final CTA)
+    const form2 = document.getElementById('email-form-2');
+    const emailInput2 = document.getElementById('email-input-2');
+    const submitBtn2 = document.getElementById('submit-btn-2');
+    const msgEl2 = document.getElementById('form-message-2');
+
+    form2.addEventListener('submit', e => {
+      e.preventDefault();
+      subscribeEmail(emailInput2.value.trim(), msgEl2, submitBtn2, form2);
+    });
   </script>
 </body>
 </html>
