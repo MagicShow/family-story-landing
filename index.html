@@ -130,9 +130,9 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      text-align: center;
+      text-align: left;
       position: relative;
       background:
         radial-gradient(ellipse at 20% 80%, rgba(168, 197, 212, 0.35) 0%, transparent 55%),
@@ -154,8 +154,8 @@
     .hero-content {
       position: relative;
       z-index: 1;
-      max-width: 760px;
-      padding: 0 32px;
+      max-width: 680px;
+      padding: 0 48px;
     }
 
     .hero-eyebrow {
@@ -186,7 +186,7 @@
       font-size: clamp(1.05rem, 2.5vw, 1.3rem);
       color: var(--warm-gray);
       max-width: 520px;
-      margin: 0 auto 48px;
+      margin: 0 0 48px;
       line-height: 1.8;
       opacity: 0;
       transform: translateY(20px);
@@ -244,7 +244,7 @@
     /* ─── Email Form ───────────────────────────────────────────── */
     .email-form-wrap {
       max-width: 480px;
-      margin: 0 auto;
+      margin: 0;
     }
 
     .email-form {
@@ -332,10 +332,10 @@
       display: flex;
       align-items: center;
       background: var(--cream);
-      text-align: center;
+      text-align: left;
     }
 
-    .problem .container { max-width: var(--max-text); }
+    .problem .container { max-width: var(--max-wide); }
 
     .section-eyebrow {
       display: inline-block;
@@ -375,7 +375,7 @@
     .stat-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
     }
 
@@ -393,6 +393,7 @@
       color: var(--warm-gray);
       line-height: 1.6;
       max-width: 200px;
+      text-align: left;
     }
 
     /* ─── Section: Promise ────────────────────────────────────── */
@@ -401,14 +402,15 @@
       display: flex;
       align-items: center;
       background: var(--ivory);
+      text-align: left;
     }
 
     .promise .container { max-width: var(--max-wide); }
 
     .promise-header {
-      text-align: center;
-      max-width: var(--max-text);
-      margin: 0 auto 80px;
+      text-align: left;
+      max-width: var(--max-wide);
+      margin: 0 0 80px;
     }
 
     .promise-header .section-eyebrow { color: var(--sage); }
@@ -420,6 +422,7 @@
       font-style: italic;
       font-size: 1.1rem;
       color: var(--warm-gray);
+      max-width: 540px;
     }
 
     .feature-grid {
@@ -435,8 +438,8 @@
     .feature-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
+      align-items: flex-start;
+      text-align: left;
       gap: 16px;
     }
 
@@ -464,9 +467,9 @@
     }
 
     .how-header {
-      text-align: center;
-      max-width: var(--max-text);
-      margin: 0 auto 96px;
+      text-align: left;
+      max-width: var(--max-wide);
+      margin: 0 0 96px;
     }
 
     .how-header .section-eyebrow { color: var(--blush); }
@@ -492,7 +495,7 @@
       .step:nth-child(even) .step-visual { order: 1; }
     }
 
-    .step-content { display: flex; flex-direction: column; gap: 16px; }
+    .step-content { display: flex; flex-direction: column; gap: 16px; text-align: left; }
 
     .step-number {
       font-family: var(--font-heading);
@@ -540,7 +543,7 @@
     .the-story .container { max-width: var(--max-text); }
 
     .story-header {
-      text-align: center;
+      text-align: left;
       margin-bottom: 72px;
     }
 
@@ -596,9 +599,9 @@
     .what-you-get { background: var(--ivory); }
 
     .wg-header {
-      text-align: center;
-      max-width: var(--max-text);
-      margin: 0 auto 72px;
+      text-align: left;
+      max-width: var(--max-wide);
+      margin: 0 0 72px;
     }
 
     .wg-header .section-eyebrow { color: var(--sage); }
@@ -642,7 +645,7 @@
     .testimonials .container { max-width: var(--max-wide); }
 
     .test-header {
-      text-align: center;
+      text-align: left;
       margin-bottom: 64px;
     }
 
@@ -707,10 +710,10 @@
     .kickstarter-teaser {
       background: var(--sage);
       color: var(--white);
-      text-align: center;
+      text-align: left;
     }
 
-    .kickstarter-teaser .container { max-width: var(--max-text); }
+    .kickstarter-teaser .container { max-width: var(--max-wide); }
 
     .kick-badge {
       display: inline-flex;
@@ -731,6 +734,7 @@
     .kickstarter-teaser h2 {
       color: var(--white);
       margin-bottom: 20px;
+      text-align: left;
     }
 
     .kickstarter-teaser p {
@@ -740,13 +744,14 @@
       color: rgba(255,255,255,0.85);
       margin-bottom: 40px;
       line-height: 1.8;
+      max-width: 540px;
     }
 
     .kick-features {
       list-style: none;
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 10px 28px;
       margin-bottom: 44px;
     }
@@ -779,10 +784,10 @@
       background:
         radial-gradient(ellipse at 50% 0%, rgba(168, 197, 212, 0.4) 0%, transparent 60%),
         var(--ivory);
-      text-align: center;
+      text-align: left;
     }
 
-    .final-cta .container { max-width: var(--max-text); }
+    .final-cta .container { max-width: var(--max-wide); }
 
     .final-cta h2 {
       color: var(--charcoal);
