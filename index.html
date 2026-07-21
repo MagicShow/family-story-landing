@@ -134,11 +134,9 @@
       justify-content: center;
       text-align: left;
       position: relative;
-      background:
-        radial-gradient(ellipse at 20% 80%, rgba(168, 197, 212, 0.35) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 20%, rgba(181, 201, 175, 0.3) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 100%, rgba(212, 168, 154, 0.2) 0%, transparent 50%),
-        var(--ivory);
+      background-image: url('https://raw.githubusercontent.com/MagicShow/family-story-landing/main/beach-sunset.jpg');
+      background-size: cover;
+      background-position: center 30%;
       overflow: hidden;
     }
 
@@ -146,8 +144,23 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238BA888' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.8;
+      background: linear-gradient(
+        to bottom,
+        rgba(20, 10, 30, 0.55) 0%,
+        rgba(20, 10, 30, 0.30) 40%,
+        rgba(20, 10, 30, 0.50) 100%
+      );
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--ivory), transparent);
       pointer-events: none;
     }
 
@@ -173,7 +186,8 @@
     }
 
     .hero h1 {
-      color: var(--charcoal);
+      color: #FAF8F5;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
       margin-bottom: 28px;
       opacity: 0;
       transform: translateY(20px);
@@ -184,7 +198,7 @@
       font-family: var(--font-accent);
       font-style: italic;
       font-size: clamp(1.05rem, 2.5vw, 1.3rem);
-      color: var(--warm-gray);
+      color: rgba(250, 248, 245, 0.85);
       max-width: 520px;
       margin: 0 0 48px;
       line-height: 1.8;
@@ -202,29 +216,27 @@
     .scroll-indicator {
       position: absolute;
       bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
       opacity: 0;
       animation: fadeIn 1s ease 1.4s forwards;
+      z-index: 2;
     }
 
     .scroll-indicator span {
       font-size: 0.7rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--warm-gray);
-      opacity: 0.6;
+      color: rgba(250, 248, 245, 0.6);
     }
 
     .scroll-indicator svg {
       width: 20px;
       height: 20px;
-      color: var(--warm-gray);
-      opacity: 0.5;
+      color: rgba(250, 248, 245, 0.5);
       animation: bounce 2.4s ease infinite;
     }
 
@@ -262,20 +274,22 @@
       font-family: var(--font-body);
       font-size: 1rem;
       padding: 16px 20px;
-      border: 1.5px solid var(--light-tan);
+      border: 1.5px solid rgba(250, 248, 245, 0.35);
       border-radius: 8px;
-      background: var(--white);
-      color: var(--charcoal);
+      background: rgba(250, 248, 245, 0.15);
+      backdrop-filter: blur(8px);
+      color: var(--white);
       outline: none;
-      transition: border-color 0.25s, box-shadow 0.25s;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
     }
 
     .email-input:focus {
-      border-color: var(--sage);
-      box-shadow: 0 0 0 3px rgba(139, 168, 136, 0.15);
+      border-color: rgba(250, 248, 245, 0.7);
+      background: rgba(250, 248, 245, 0.22);
+      box-shadow: 0 0 0 3px rgba(250, 248, 245, 0.1);
     }
 
-    .email-input::placeholder { color: var(--warm-gray); opacity: 0.55; }
+    .email-input::placeholder { color: rgba(250, 248, 245, 0.55); }
 
     .btn-primary {
       font-family: var(--font-body);
@@ -291,7 +305,7 @@
       white-space: nowrap;
     }
 
-    .btn-primary:hover { background: var(--warm-gray); transform: translateY(-1px); }
+    .btn-primary:hover { background: var(--sage); transform: translateY(-1px); }
     .btn-primary:active { transform: translateY(0); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
